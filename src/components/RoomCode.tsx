@@ -1,5 +1,3 @@
-import { useParams } from 'react-router-dom';
-
 import copyImg from '../assets/images/copy.svg';
 
 import '../styles/room-code.scss';

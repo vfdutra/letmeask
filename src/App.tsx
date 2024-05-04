@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 
 import { Home } from "./pages/Home";
 import { NewRoom } from "./pages/NewRoom";
@@ -7,17 +8,37 @@ import { AdminRoom } from './pages/AdminRoom';
 
 import { AuthContextProvider } from './contexts/AuthContext';
 
+import { usePersistedState } from './hooks/usePersistedState';
+
+import {GlobalStyle} from "./styles/global";
+
+import light from './styles/themes/light';
+import dark from './styles/themes/dark';
+
 export default function App() {
+  const [theme, setTheme] = usePersistedState('theme', light);
+
+  const toggleTheme = () => {
+    setTheme(theme.title === 'light' ? dark : light);
+  };  
+
+  function RoomWithToggle() {
+    return <Room toggleTheme={toggleTheme} />;
+  }
+  
   return (
-    <BrowserRouter>
-      <AuthContextProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/rooms/new" element={<NewRoom />} />
-          <Route path="/rooms/:id" element={<Room />} />
-          <Route path="/admin/rooms/:id" element={<AdminRoom />} />
-        </Routes>
-      </AuthContextProvider>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <BrowserRouter>
+        <AuthContextProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/rooms/new" element={<NewRoom />} />
+            <Route path="/rooms/:id" element={<RoomWithToggle />} />
+            <Route path="/admin/rooms/:id" element={<AdminRoom />} />
+          </Routes>
+        </AuthContextProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
