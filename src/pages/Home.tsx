@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { database, ref , push, get } from '../services/firebase';
+import { database, ref , get } from '../services/firebase';
 
 import illustrtionImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
@@ -33,8 +33,14 @@ export function Home() {
 
     const roomRef = ref(database, `rooms/${roomCode}`)
 
-    if(!get(roomRef)){
+    
+    if(!(await get(roomRef)).exists()){      
       alert('Room does not exists.');
+      return;
+    }
+
+    if((await get(roomRef)).val().endedAt){
+      alert('Room already closed.');
       return;
     }
 
