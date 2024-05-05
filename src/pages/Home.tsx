@@ -8,10 +8,17 @@ import googleIconImg from '../assets/images/google-icon.svg';
 
 import { Button } from '../components/Button';
 import { useAuth } from '../hooks/useAuth';
+import ThemeSwitch from '../components/ThemeSwitch';
 
 import '../styles/auth.scss';
 
-export function Home() {
+import { PageHomeHeader } from '../styles/auth';
+
+type HomeProps = {
+  toggleTheme(): void;
+}
+
+export function Home({ toggleTheme }: HomeProps) {
   const history = useNavigate();
   const {user, signInWithGoogle } = useAuth();
   const [roomCode, setRoomCode ] = useState('');
@@ -56,6 +63,9 @@ export function Home() {
       </aside>
       <main>
         <div className='main-content'>
+          <PageHomeHeader>
+            <ThemeSwitch toggleTheme={toggleTheme} />
+          </PageHomeHeader>
           <img src={logoImg} alt="Letmeask" />
           <button onClick={handleCreateRoom} className='create-room'>
             <img src={googleIconImg} alt="Logo do Google" />

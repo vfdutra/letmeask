@@ -25,6 +25,6 @@
     "src"
   ],
   "files": [
-    "src/styles/styles.d.ts"
+    "src/styles/styles.d.ts",
   ]
 }

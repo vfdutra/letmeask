@@ -1,37 +1,33 @@
-import { FormEvent, useState, useContext } from 'react';
+import { FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import  Switch from 'react-switch';
-import { ThemeContext } from 'styled-components';
-import { shade } from 'polished';
 
 import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../hooks/useRoom';
 
 import { Question } from '../components/Question';
 import { Button } from '../components/Button';
-import { RoomCode } from '../components/RoomCode';
+import RoomCode  from '../components/RoomCode';
+import Logo from '../components/Logo';
+import ThemeSwitch from '../components/ThemeSwitch';
 
 import { database, ref, push, remove } from '../services/firebase';
 
-import logoImg from '../assets/images/logo.svg';
-
-import '../styles/room.scss';
+import { PageRoomHeader, PageRoomMain } from '../styles/room-styles'; 
 
 type RoomParams = {
   id: string;
 }
 
-interface Props {
+interface RoomProps {
   toggleTheme: () => void;
 }
 
-export function Room({ toggleTheme }: Props) {
+export function Room({ toggleTheme }: RoomProps) {
   const { user } = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState(''); 
   const roomId = params.id;
   const { questions, title } = useRoom(roomId || '');
-  const { colors, title: themeTitle } = useContext(ThemeContext)!;
 
   async function handleSendQustion(event: FormEvent) {
     event.preventDefault();
@@ -75,26 +71,17 @@ export function Room({ toggleTheme }: Props) {
 
   return (
     <div id='page-room'>
-      <header>
+      <PageRoomHeader>
         <div className='content'>
-          <img src={logoImg} alt='Letmeask' />
+          <Logo />
           <div>
             <RoomCode code={roomId || ''}/>
-            <Switch
-              onChange={toggleTheme}
-              checked={themeTitle === 'dark'}
-              checkedIcon={false}
-              uncheckedIcon={false}
-              width={40}
-              handleDiameter={20}
-              offColor={shade(0.3, colors.primary)}
-              onColor={shade(0.2, colors.secondary)}
-            />
+            <ThemeSwitch toggleTheme={toggleTheme} />
           </div>
         </div>
-      </header>
+      </PageRoomHeader>
 
-      <main className='content'>
+      <PageRoomMain className='content'>
         <div className='room-title'>
           <h1>Sala {title}</h1>
           { questions.length > 0 && <span>{questions.length} pergunta(s)</span> }
@@ -147,7 +134,7 @@ export function Room({ toggleTheme }: Props) {
           );
         })}
         </div>
-      </main>
+      </PageRoomMain>
     </div>
   );
 }

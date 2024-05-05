@@ -9,6 +9,8 @@ declare module 'styled-components' {
       secondary: string;
       background: string;
       text: string;
+      homeButton: string;
+      homeButtonText: string;
     }
   }
 }

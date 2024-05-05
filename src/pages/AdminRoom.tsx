@@ -1,23 +1,29 @@
 import { useNavigate, useParams } from 'react-router-dom';
-
-import logoImg from '../assets/images/logo.svg';
 import deleteImg from '../assets/images/delete.svg';
 import checkImg from '../assets/images/check.svg';
 import answerImg from '../assets/images/answer.svg';
 
 import { Button } from '../components/Button';
 import { Question } from '../components/Question';
-import { RoomCode } from '../components/RoomCode';
+import RoomCode  from '../components/RoomCode';
+import Logo from '../components/Logo';
+import ThemeSwitch from '../components/ThemeSwitch';
+
 import { useRoom } from '../hooks/useRoom';
 
-import '../styles/room.scss';
 import { database, ref, remove, update } from '../services/firebase';
+
+import { PageRoomHeader, PageRoomMain } from '../styles/room-styles'; 
 
 type RoomParams = {
   id: string;
 }
 
-export function AdminRoom() {
+interface AdminRoomProps {
+  toggleTheme: () => void;
+}
+
+export function AdminRoom({ toggleTheme }: AdminRoomProps) {
   const params = useParams<RoomParams>();
   const roomId = params.id;
   const { questions, title } = useRoom(roomId || '');   
@@ -55,19 +61,20 @@ export function AdminRoom() {
 
   return (
     <div id='page-room'>
-      <header>
+      <PageRoomHeader>
         <div className='content'>
-          <img src={logoImg} alt='Letmeask' />
+          <Logo />
           <div>
             <RoomCode code={roomId || ''}/>
             <Button isOutlined
               onClick={() => handleEndRoom()}
             >Encerrar Sala</Button>
+            <ThemeSwitch toggleTheme={toggleTheme} />
           </div>
         </div>
-      </header>
+      </PageRoomHeader>
 
-      <main className='content'>
+      <PageRoomMain className='content'>
         <div className='room-title'>
           <h1>Sala {title}</h1>
           { questions.length > 0 && <span>{questions.length} pergunta(s)</span> }
@@ -109,7 +116,7 @@ export function AdminRoom() {
           );
         })}
         </div>
-      </main>
+      </PageRoomMain>
     </div>
   );
 }

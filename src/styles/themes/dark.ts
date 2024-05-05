@@ -1,4 +1,4 @@
-export default {
+export const dark = {
   title: 'dark',
 
   colors: {
@@ -6,6 +6,8 @@ export default {
     secondary: '#0d6efd',
 
     background: '#000000',
-    text: '#392291'
+    text: '#FFF',
+    homeButton: '#835afd',
+    homeButtonText: "#000000"
   },
 };

@@ -1,4 +1,4 @@
-export default {
+export const light = {
   title: 'light',
 
   colors: {
@@ -6,6 +6,8 @@ export default {
     secondary: '#000',
 
     background: '#FFF',
-    text: '#29292e'
+    text: '#737380',    
+    homeButton: '#835afd',
+    homeButtonText: "#FFF"
   },
 };
